@@ -531,7 +531,7 @@
                 />
                 <span>
                   He leído y acepto los
-                  <a href="terminos.html" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a>.
+                  <a href="terminos.html" data-legal-modal="terminos">Términos y Condiciones</a>.
                 </span>
               </label>
               <div id="terms-error" class="error-msg">
@@ -551,7 +551,7 @@
                 />
                 <span>
                   Autorizo de manera previa, expresa e informada el tratamiento de mi correo conforme a la
-                  <a href="privacidad.html" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>.
+                  <a href="privacidad.html" data-legal-modal="privacidad">Política de Privacidad</a>.
                 </span>
               </label>
               <div id="privacy-error" class="error-msg">
@@ -581,6 +581,29 @@
       <p class="footer-note">Sistema de Información de Laboratorio Clínico · Windows 10 / 11</p>
     </div>
   </footer>
+
+  <dialog id="legal-modal" class="legal-modal" closedby="any" aria-labelledby="legal-modal-title">
+    <div class="legal-modal-shell">
+      <div class="legal-modal-header">
+        <div>
+          <span id="legal-modal-eyebrow" class="section-eyebrow">Documento legal</span>
+          <h1 id="legal-modal-title" class="legal-modal-title">Documento</h1>
+        </div>
+        <button type="button" id="legal-modal-close" class="legal-modal-close" aria-label="Cerrar ventana" autofocus>
+          ✕
+        </button>
+      </div>
+      <div id="legal-modal-body" class="legal-modal-body"></div>
+      <div class="legal-modal-footer">
+        <a id="legal-modal-external" href="terminos.html" target="_blank" rel="noopener noreferrer" class="legal-modal-ext">
+          Abrir en página completa ↗
+        </a>
+        <form method="dialog">
+          <button type="submit" class="pill-cta pill-cta--sm">Cerrar</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
 
   <script src="app.js"></script>
 </body>

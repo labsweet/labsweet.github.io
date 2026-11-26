@@ -12,6 +12,7 @@ const LEGAL_VERSIONS = {
 document.addEventListener('DOMContentLoaded', () => {
   initDesktopWindowTabs();
   initOfflineSyncDemo();
+  initLegalModal();
   initWaitlistForm();
 });
 
@@ -108,6 +109,105 @@ function initOfflineSyncDemo() {
       });
     }
   });
+}
+
+/**
+ * Abre Términos y Condiciones y Política de Privacidad en un <dialog> modal nativo
+ * dentro de la misma página, con cierre con Esc, botón o clic fuera (light-dismiss).
+ */
+function initLegalModal() {
+  const dialog = document.getElementById('legal-modal');
+  const titleEl = document.getElementById('legal-modal-title');
+  const eyebrowEl = document.getElementById('legal-modal-eyebrow');
+  const bodyEl = document.getElementById('legal-modal-body');
+  const extLink = document.getElementById('legal-modal-external');
+  const closeBtn = document.getElementById('legal-modal-close');
+  if (!dialog || !titleEl || !eyebrowEl || !bodyEl || !extLink || !closeBtn) return;
+
+  const LEGAL_DOCS = {
+    terminos: {
+      eyebrow: 'Versión 1.0 · Vigente desde 26 de noviembre de 2026 · Venezuela',
+      title: 'Términos y Condiciones',
+      url: 'terminos.html',
+      html: `
+        <p>Estos Términos y Condiciones regulan el acceso y uso del sitio web informativo y la lista de espera de <strong>SweetLab Desktop</strong>, de conformidad con la legislación de la República Bolivariana de Venezuela, incluyendo el Decreto con Fuerza de Ley sobre Mensajes de Datos y Firmas Electrónicas y el Código Civil venezolano.</p>
+        <h2>1. Objeto del sitio</h2>
+        <p>Este sitio web presenta información sobre la aplicación de escritorio <strong>SweetLab Desktop</strong> (Sistema de Información de Laboratorio Clínico — LIS) y permite registrar un correo electrónico en la lista de espera para recibir avisos sobre el acceso anticipado.</p>
+        <h2>2. Registro en la lista de espera</h2>
+        <p>El registro en la lista de espera es gratuito y no constituye un contrato de compraventa ni obliga al usuario a adquirir una licencia futura. Al enviar su correo, el usuario declara que es titular de dicha dirección o cuenta con autorización para registrarla.</p>
+        <h2>3. Propiedad intelectual</h2>
+        <p>El nombre, logotipo, diseño, textos, interfaces y código de SweetLab Desktop pertenecen a su titular. Queda prohibida su reproducción, distribución o uso comercial no autorizado.</p>
+        <h2>4. Alcance y disponibilidad</h2>
+        <p>Las vistas previas mostradas en este sitio son demostrativas del funcionamiento del software. Las funcionalidades finales, planes, precios y condiciones comerciales se informarán de manera previa, clara y suficiente antes de cualquier contratación.</p>
+        <h2>5. Ley aplicable y jurisdicción</h2>
+        <p>Estos Términos se rigen por las leyes de la República Bolivariana de Venezuela. Contacto: <a href="mailto:jesusramos.1992@gmail.com">jesusramos.1992@gmail.com</a>.</p>
+      `,
+    },
+    privacidad: {
+      eyebrow: 'Versión 1.0 · Constitución de la RBV (Arts. 28 y 60) · Venezuela',
+      title: 'Política de Privacidad y Protección de Datos',
+      url: 'privacidad.html',
+      html: `
+        <p>En cumplimiento de los artículos 28 y 60 de la <strong>Constitución de la República Bolivariana de Venezuela</strong>, la <strong>Ley Especial contra los Delitos Informáticos</strong> y el <strong>Decreto con Fuerza de Ley sobre Mensajes de Datos y Firmas Electrónicas</strong>, informamos cómo recolectamos, resguardamos y tratamos los datos personales en este sitio web.</p>
+        <h2>1. Responsable del tratamiento</h2>
+        <p><strong>Responsable:</strong> Jesús Ramos / Proyecto SweetLab Desktop.<br /><strong>Contacto:</strong> <a href="mailto:jesusramos.1992@gmail.com">jesusramos.1992@gmail.com</a></p>
+        <h2>2. Datos recolectados (principio de minimización)</h2>
+        <p>En el formulario de lista de espera solicitamos <strong>únicamente su dirección de correo electrónico</strong>. No solicitamos datos sensibles, historias clínicas ni información financiera en este sitio web.</p>
+        <p>Para dejar constancia verificable de su consentimiento como mensaje de datos, conservamos un registro técnico de aceptación: identificador único del registro, fecha y hora exacta (UTC) de aceptación de cada casilla, versión de las políticas aceptadas, URL del formulario y agente de usuario del navegador.</p>
+        <h2>3. Finalidad del tratamiento</h2>
+        <ul>
+          <li>Gestionar su inscripción en la lista de espera de SweetLab Desktop.</li>
+          <li>Enviar notificaciones exclusivamente relacionadas con la disponibilidad del acceso anticipado o lanzamiento del producto.</li>
+          <li>Conservar constancia auditable de la autorización otorgada por el titular.</li>
+        </ul>
+        <h2>4. Derechos del titular (Habeas Data)</h2>
+        <ul>
+          <li><strong>Acceder</strong> a su correo registrado y a la constancia de su consentimiento.</li>
+          <li><strong>Actualizar o rectificar</strong> su dirección de correo electrónico.</li>
+          <li><strong>Revocar su consentimiento</strong> y solicitar la eliminación definitiva de su correo en cualquier momento escribiendo a <a href="mailto:jesusramos.1992@gmail.com">jesusramos.1992@gmail.com</a>.</li>
+        </ul>
+      `,
+    },
+  };
+
+  document.querySelectorAll('[data-legal-modal]').forEach((trigger) => {
+    trigger.addEventListener('click', (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const docKey = trigger.dataset.legalModal;
+      const doc = LEGAL_DOCS[docKey];
+      if (!doc) return;
+
+      event.preventDefault();
+      eyebrowEl.textContent = doc.eyebrow;
+      titleEl.textContent = doc.title;
+      bodyEl.innerHTML = doc.html;
+      bodyEl.scrollTop = 0;
+      extLink.href = doc.url;
+      dialog.showModal();
+    });
+  });
+
+  closeBtn.addEventListener('click', () => {
+    dialog.close();
+  });
+
+  dialog.addEventListener('close', () => {
+    dialog.returnValue = '';
+  });
+
+  if (!('closedBy' in HTMLDialogElement.prototype)) {
+    const outside = (e) => {
+      const r = dialog.getBoundingClientRect();
+      return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+    };
+    let pressedOutside = false;
+    dialog.addEventListener('pointerdown', (e) => {
+      pressedOutside = outside(e);
+    });
+    dialog.addEventListener('pointerup', (e) => {
+      if (pressedOutside && outside(e)) dialog.close();
+    });
+  }
 }
 
 /**
