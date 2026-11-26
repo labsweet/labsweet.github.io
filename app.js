@@ -369,7 +369,7 @@ function initWaitlistForm() {
         linkError(el, false);
       });
 
-      feedback.textContent = `¡Listo! Registramos ${email} en la lista de espera (Ref. de consentimiento: ${consentRecord.consent_id.slice(0, 8)}).`;
+      feedback.textContent = `¡Listo! Registramos ${email} en la lista de espera.`;
       feedback.hidden = false;
       announcer.textContent = feedback.textContent;
     } catch {
