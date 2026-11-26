@@ -1,4 +1,5 @@
 :root {
+  --target-size: 24px;
   --sl-primary: #7928CA;
   --sl-accent: #D946EF;
   --sl-deep: #4C1D95;
@@ -40,8 +41,15 @@
   box-sizing: border-box;
 }
 
+@media (pointer: coarse) {
+  :root {
+    --target-size: 44px;
+  }
+}
+
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 76px;
 }
 
 body {
@@ -51,7 +59,38 @@ body {
   background-color: var(--sl-canvas);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  overflow-x: clip;
+  overflow-wrap: break-word;
+}
+
+img,
+video {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+:where(a, code) {
+  overflow-wrap: anywhere;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+:where(button, select, textarea, input:not([type="checkbox"], [type="radio"]), [role="button"], nav a) {
+  min-block-size: var(--target-size);
+}
+
+@media (pointer: coarse) {
+  label:has(input[type="checkbox"], input[type="radio"]) {
+    min-block-size: var(--target-size);
+  }
 }
 
 .visually-hidden:where(:not(:focus-within, :active)) {
@@ -265,7 +304,7 @@ body {
 
 .hero-title {
   margin: 0 0 18px;
-  font-size: clamp(2.5rem, 6.2vw, 4.75rem);
+  font-size: clamp(2rem, 1.1rem + 4.5vw, 4.75rem);
   font-weight: 800;
   letter-spacing: -0.045em;
   line-height: 1.02;
@@ -350,6 +389,7 @@ body {
 }
 
 .desktop-window {
+  container: app-window / inline-size;
   background: var(--sl-white);
   border-radius: var(--radius-window);
   box-shadow: var(--shadow-window);
@@ -618,6 +658,10 @@ body {
   color: var(--sl-primary);
 }
 
+.order-patient {
+  min-width: 0;
+}
+
 .order-patient strong {
   display: block;
   font-size: 0.92rem;
@@ -757,6 +801,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 16px;
   padding: 16px 18px;
   border-radius: 16px;
@@ -817,7 +862,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 6px 10px;
   padding: 10px 12px;
   border-radius: 11px;
   background: var(--sl-white);
@@ -859,7 +905,7 @@ body {
 
 .atmosphere-title {
   margin: 0 0 20px;
-  font-size: clamp(2rem, 4.4vw, 3.4rem);
+  font-size: clamp(1.75rem, 1.05rem + 3.2vw, 3.4rem);
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1.12;
@@ -986,7 +1032,7 @@ body {
 
 .section-title {
   margin: 0;
-  font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+  font-size: clamp(1.65rem, 1.1rem + 2.5vw, 2.8rem);
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1.08;
@@ -1050,7 +1096,7 @@ body {
 
 .waitlist-title {
   margin: 0 0 10px;
-  font-size: clamp(1.7rem, 3.2vw, 2.3rem);
+  font-size: clamp(1.5rem, 1.05rem + 2vw, 2.3rem);
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1.1;
@@ -1225,7 +1271,7 @@ body {
 
 .legal-card h1 {
   margin: 0 0 14px;
-  font-size: clamp(1.8rem, 3.6vw, 2.5rem);
+  font-size: clamp(1.55rem, 1.1rem + 2vw, 2.5rem);
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1.1;
@@ -1409,47 +1455,267 @@ dialog.legal-modal::backdrop {
   color: var(--sl-ink-muted);
 }
 
-/* Responsive */
-@media (max-width: 860px) {
-  .window-body,
-  .atmosphere-inner,
-  .bento-grid {
+/* Responsive por contenedor para la ventana interactiva */
+@container app-window (inline-size < 740px) {
+  .window-body {
     grid-template-columns: 1fr;
+    min-height: auto;
   }
 
   .app-sidebar {
     display: none;
   }
 
-  .floating-dock {
+  .app-canvas {
+    padding: 18px;
+  }
+
+  .window-status-pill {
     display: none;
+  }
+
+  .window-tabs {
+    order: 3;
+    flex-basis: 100%;
+    justify-content: flex-start;
   }
 
   .billing-grid {
     grid-template-columns: 1fr;
   }
+}
 
-  .order-row {
-    grid-template-columns: 1fr auto;
+@container app-window (inline-size < 560px) {
+  .app-canvas {
+    padding: 14px;
   }
 
-  .order-code {
+  .panel-header {
+    margin-bottom: 16px;
+  }
+
+  .panel-heading {
+    font-size: 1.12rem;
+  }
+
+  .order-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 12px;
+    padding: 12px 14px;
+  }
+
+  .order-patient {
+    flex: 1 1 100%;
+  }
+
+  .pdf-preview-sheet {
+    padding: 14px;
+  }
+
+  .pdf-sheet-top {
+    flex-wrap: wrap;
+  }
+
+  .pdf-row--head {
+    display: none;
+  }
+
+  .pdf-row {
+    grid-template-columns: 1fr auto;
+    gap: 4px 10px;
+    padding: 10px 12px;
+  }
+
+  .pdf-row > span:first-child {
+    grid-column: 1;
+    font-weight: 600;
+  }
+
+  .pdf-row > strong {
+    grid-column: 2;
+    text-align: end;
+  }
+
+  .pdf-row > span:last-child {
     grid-column: 1 / -1;
+    font-size: 0.78rem;
+    color: var(--sl-ink-muted);
+  }
+
+  .cashier-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 14px;
+  }
+}
+
+/* Responsive de página */
+@media (max-width: 860px) {
+  .atmosphere-inner,
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .atmosphere-inner {
+    gap: 32px;
+  }
+
+  .sync-showcase {
+    min-height: auto;
+    gap: 14px;
+  }
+
+  .sync-card {
+    max-width: 100%;
+  }
+
+  .sync-card--back,
+  .sync-card--front {
+    transform: none;
+  }
+
+  .floating-dock {
+    display: none;
   }
 }
 
 @media (max-width: 600px) {
-  .nav-link {
+  .topbar {
+    padding: 10px 14px;
+  }
+
+  .topbar-inner {
+    gap: 8px;
+  }
+
+  .brand-pill {
+    padding: 6px 10px 6px 7px;
+    font-size: 0.86rem;
+  }
+
+  .brand-pill-tag {
     display: none;
+  }
+
+  .topbar-nav:has(.pill-cta) .nav-link {
+    display: none;
+  }
+
+  .hero {
+    padding: 20px 16px 56px;
+  }
+
+  .hero-header {
+    margin-bottom: 32px;
+  }
+
+  .emblem-3d {
+    width: 76px;
+    height: 76px;
+    border-radius: 22px;
+    margin-bottom: 20px;
+  }
+
+  .hero-subtitle {
+    font-size: 0.98rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hero-actions .pill-cta {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .atmosphere-section {
+    padding: 56px 16px;
+  }
+
+  .atmosphere-text {
+    font-size: 0.96rem;
+  }
+
+  .bento-section {
+    padding: 52px 16px;
+  }
+
+  .bento-card {
+    padding: 22px 18px;
+  }
+
+  .waitlist-section {
+    padding: 24px 16px 64px;
+  }
+
+  .waitlist-card {
+    padding: 28px 18px;
+    border-radius: 22px;
   }
 
   .waitlist-input-row {
     flex-direction: column;
-    border-radius: 20px;
+    border-radius: 18px;
     padding: 8px;
   }
 
-  .waitlist-card {
-    padding: 36px 20px;
+  .waitlist-input-row input {
+    width: 100%;
+    padding: 12px 14px;
+  }
+
+  .waitlist-input-row .pill-cta {
+    width: 100%;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .footer-legal-links {
+    gap: 10px 16px;
+  }
+
+  .legal-page {
+    padding: 18px 14px 56px;
+  }
+
+  .legal-card {
+    padding: 24px 18px;
+    border-radius: 20px;
+  }
+
+  dialog.legal-modal {
+    width: calc(100vw - 20px);
+    max-height: 88dvh;
+    border-radius: 20px;
+  }
+
+  .legal-modal-shell {
+    max-height: 88dvh;
+  }
+
+  .legal-modal-header {
+    padding: 18px 18px 14px;
+  }
+
+  .legal-modal-title {
+    font-size: 1.2rem;
+  }
+
+  .legal-modal-body {
+    padding: 16px 18px;
+  }
+
+  .legal-modal-footer {
+    padding: 12px 18px 16px;
+    flex-wrap: wrap;
   }
 }
