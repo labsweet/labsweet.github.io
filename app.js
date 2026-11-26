@@ -3,7 +3,8 @@
  * los correos y el registro auditable de consentimiento en Google Sheets.
  * Script listo para usar en: docs/apps_script_waitlist.gs
  */
-const APPS_SCRIPT_WAITLIST_URL = '';
+const APPS_SCRIPT_WAITLIST_URL =
+  'https://script.google.com/macros/s/AKfycby_8jwRw0znuB8kcB54cGiWZO0IpXKzqHr-SFu2lcyaQWiB_vLJdeJja7IEg4mX7nwC/exec';
 const LEGAL_VERSIONS = {
   terms: '1.0',
   privacy: '1.0',
@@ -351,7 +352,7 @@ function initWaitlistForm() {
         await fetch(APPS_SCRIPT_WAITLIST_URL, {
           method: 'POST',
           mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(consentRecord),
         });
       } else {
