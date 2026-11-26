@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SweetLab Desktop — Sistema de Laboratorio Clínico Offline-First</title>
+  <meta
+    name="description"
+    content="SweetLab Desktop es el Sistema de Información de Laboratorio Clínico (LIS) para Windows: órdenes, resultados en PDF, facturación BCV, cierre de caja y cifrado AES-256-GCM offline-first."
+  />
+  <link rel="icon" type="image/png" href="assets/sweet-lab-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a href="#contenido-principal" class="skip-link visually-hidden">Saltar al contenido principal</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="#inicio" class="brand-pill" aria-label="SweetLab Desktop, inicio">
+        <img src="assets/sweet-lab-logo.png" alt="" width="24" height="24" class="brand-pill-icon" />
+        <span class="brand-pill-name">SweetLab</span>
+        <span class="brand-pill-tag">Desktop</span>
+      </a>
+
+      <nav class="topbar-nav" aria-label="Navegación principal">
+        <a href="#modulos" class="nav-link">Módulos</a>
+        <a href="#sincronizacion" class="nav-link">Offline-first</a>
+        <a href="#lista-espera" class="pill-cta pill-cta--sm">Lista de espera</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido-principal" tabindex="-1">
+    <!-- Bloque 1: Hero estilo Amie -->
+    <section id="inicio" class="hero">
+      <div class="hero-backdrop" aria-hidden="true"></div>
+
+      <div class="hero-header">
+        <div class="emblem-3d" aria-hidden="true">
+          <img src="assets/sweet-lab-logo.png" alt="" width="88" height="88" />
+        </div>
+
+        <h1 class="hero-title">
+          Órdenes, resultados, caja.<br />
+          <span class="hero-title-muted">Todo en orden.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          El sistema de laboratorio clínico para Windows que trabaja sin internet, cifra cada dato local con AES-256-GCM y se sincroniza con SweetLab móvil.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#lista-espera" class="pill-cta">
+            Unirme a la lista de espera
+            <span class="pill-cta-arrow" aria-hidden="true">→</span>
+          </a>
+          <span class="hero-platform-note">Windows 10 / 11 · Tauri + Rust</span>
+        </div>
+      </div>
+
+      <!-- Ventana interactiva de SweetLab Desktop -->
+      <div class="app-stage">
+        <div class="floating-dock floating-dock--left" aria-hidden="true">
+          <span class="dock-dot dock-dot--green"></span>
+          <span>Bóveda AES-256-GCM</span>
+        </div>
+
+        <div class="floating-dock floating-dock--right" aria-hidden="true">
+          <span class="dock-badge">BCV</span>
+          <span>Bs. 46,82 / $</span>
+        </div>
+
+        <div class="desktop-window" role="region" aria-label="Vista previa interactiva de SweetLab Desktop">
+          <!-- Barra superior de la ventana -->
+          <div class="window-chrome">
+            <div class="window-controls" aria-hidden="true">
+              <span class="win-dot win-dot--close"></span>
+              <span class="win-dot win-dot--min"></span>
+              <span class="win-dot win-dot--max"></span>
+            </div>
+
+            <div class="window-tabs" role="tablist" aria-label="Vistas de SweetLab Desktop">
+              <button
+                type="button"
+                role="tab"
+                id="tab-ordenes"
+                class="win-tab"
+                aria-selected="true"
+                tabindex="0"
+                data-panel="panel-ordenes"
+              >
+                Órdenes
+              </button>
+              <button
+                type="button"
+                role="tab"
+                id="tab-resultados"
+                class="win-tab"
+                aria-selected="false"
+                tabindex="-1"
+                data-panel="panel-resultados"
+              >
+                Resultados PDF
+              </button>
+              <button
+                type="button"
+                role="tab"
+                id="tab-facturacion"
+                class="win-tab"
+                aria-selected="false"
+                tabindex="-1"
+                data-panel="panel-facturacion"
+              >
+                Facturación BCV
+              </button>
+              <button
+                type="button"
+                role="tab"
+                id="tab-offline"
+                class="win-tab"
+                aria-selected="false"
+                tabindex="-1"
+                data-panel="panel-offline"
+              >
+                Modo Offline
+              </button>
+            </div>
+
+            <div class="window-status-pill">
+              <span class="status-pulse" aria-hidden="true"></span>
+              <span>Recepción · Bioanálisis</span>
+            </div>
+          </div>
+
+          <!-- Cuerpo de la app -->
+          <div class="window-body">
+            <aside class="app-sidebar" aria-hidden="true">
+              <div class="sidebar-brand">
+                <img src="assets/sweet-lab-logo.png" alt="" width="22" height="22" />
+                <span>SweetLab LIS</span>
+              </div>
+              <div class="sidebar-group">
+                <div class="sidebar-item">Inicio</div>
+                <div class="sidebar-item">Pacientes</div>
+                <div class="sidebar-item is-highlighted" data-sync-nav="panel-ordenes">Órdenes</div>
+                <div class="sidebar-item" data-sync-nav="panel-resultados">Resultados</div>
+                <div class="sidebar-item">Presupuestos</div>
+                <div class="sidebar-item" data-sync-nav="panel-facturacion">Facturación</div>
+                <div class="sidebar-item">Cierre de Caja</div>
+                <div class="sidebar-item">Catálogo</div>
+                <div class="sidebar-item">Sellos y Firmas</div>
+              </div>
+              <div class="sidebar-vault" data-sync-nav="panel-offline">
+                <span class="vault-lock" aria-hidden="true">🔒</span>
+                <div>
+                  <strong>sweetlab_vault.db</strong>
+                  <small>Cifrado local activo</small>
+                </div>
+              </div>
+            </aside>
+
+            <div class="app-canvas">
+              <!-- Panel 1: Órdenes -->
+              <div
+                id="panel-ordenes"
+                role="tabpanel"
+                aria-labelledby="tab-ordenes"
+                tabindex="0"
+                class="app-panel"
+              >
+                <div class="panel-inner">
+                  <div class="panel-header">
+                    <div>
+                      <span class="panel-eyebrow">Rutina de hoy · 18 órdenes</span>
+                      <h2 class="panel-heading">Control de órdenes y muestras</h2>
+                    </div>
+                    <div class="panel-chip-group">
+                      <span class="pastel-chip pastel-chip--lavender">Hematología (7)</span>
+                      <span class="pastel-chip pastel-chip--mint">Química (6)</span>
+                      <span class="pastel-chip pastel-chip--amber">Urgencias (2)</span>
+                    </div>
+                  </div>
+
+                  <div class="order-list">
+                    <div class="order-row">
+                      <div class="order-code">#SL-1042</div>
+                      <div class="order-patient">
+                        <strong>María Valentina Rojas</strong>
+                        <span>Hematología Completa · Glicemia · Perfil Lipídico</span>
+                      </div>
+                      <span class="pastel-pill pastel-pill--mint">Validado</span>
+                      <span class="order-amount">$28,00</span>
+                    </div>
+
+                    <div class="order-row">
+                      <div class="order-code">#SL-1043</div>
+                      <div class="order-patient">
+                        <strong>Carlos Eduardo Méndez</strong>
+                        <span>TSH · T4 Libre · Insulina Basal</span>
+                      </div>
+                      <span class="pastel-pill pastel-pill--lavender">En análisis</span>
+                      <span class="order-amount">$42,50</span>
+                    </div>
+
+                    <div class="order-row">
+                      <div class="order-code">#SL-1044</div>
+                      <div class="order-patient">
+                        <strong>Lucía Fernanda Díaz</strong>
+                        <span>Uroanálisis · Proteína C Reactiva</span>
+                      </div>
+                      <span class="pastel-pill pastel-pill--amber">Toma de muestra</span>
+                      <span class="order-amount">$16,00</span>
+                    </div>
+
+                    <div class="order-row">
+                      <div class="order-code">#SL-1045</div>
+                      <div class="order-patient">
+                        <strong>José Gregorio Pérez</strong>
+                        <span>Perfil Preoperatorio Completo</span>
+                      </div>
+                      <span class="pastel-pill pastel-pill--sky">Listo para PDF</span>
+                      <span class="order-amount">$54,00</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Panel 2: Resultados PDF -->
+              <div
+                id="panel-resultados"
+                role="tabpanel"
+                aria-labelledby="tab-resultados"
+                class="app-panel"
+                hidden
+              >
+                <div class="panel-inner">
+                  <div class="panel-header">
+                    <div>
+                      <span class="panel-eyebrow">Generador vectorial pdfmake</span>
+                      <h2 class="panel-heading">Reporte clínico #SL-1042</h2>
+                    </div>
+                    <span class="pastel-chip pastel-chip--mint">Firma y sello digital listos</span>
+                  </div>
+
+                  <div class="pdf-preview-sheet">
+                    <div class="pdf-sheet-top">
+                      <div>
+                        <strong>Paciente:</strong> María Valentina Rojas · 31 años
+                      </div>
+                      <div class="pdf-meta-code">Ref: 25/11/2026</div>
+                    </div>
+
+                    <div class="pdf-table-mock">
+                      <div class="pdf-row pdf-row--head">
+                        <span>Parámetro</span>
+                        <span>Resultado</span>
+                        <span>Valor de referencia</span>
+                      </div>
+                      <div class="pdf-row">
+                        <span>Hemoglobina</span>
+                        <strong class="val-ok">13,6 g/dL</strong>
+                        <span>12,0 – 15,5 g/dL</span>
+                      </div>
+                      <div class="pdf-row">
+                        <span>Leucocitos</span>
+                        <strong class="val-ok">6,8 × 10³/µL</strong>
+                        <span>4,5 – 11,0 × 10³/µL</span>
+                      </div>
+                      <div class="pdf-row">
+                        <span>Glicemia en ayunas</span>
+                        <strong class="val-warn">104 mg/dL ▲</strong>
+                        <span>70 – 99 mg/dL</span>
+                      </div>
+                      <div class="pdf-row">
+                        <span>Colesterol total</span>
+                        <strong class="val-ok">178 mg/dL</strong>
+                        <span>&lt; 200 mg/dL</span>
+                      </div>
+                    </div>
+
+                    <div class="pdf-stamp-bar">
+                      <div class="stamp-box">
+                        <span class="stamp-seal">BIOANÁLISIS VALIDADO</span>
+                        <small>Lic. Anaís Herrera · MPPS 14.892</small>
+                      </div>
+                      <span class="pastel-pill pastel-pill--lavender">Exportar PDF / Imprimir</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Panel 3: Facturación BCV -->
+              <div
+                id="panel-facturacion"
+                role="tabpanel"
+                aria-labelledby="tab-facturacion"
+                class="app-panel"
+                hidden
+              >
+                <div class="panel-inner">
+                  <div class="panel-header">
+                    <div>
+                      <span class="panel-eyebrow">Multimoneda + Tasa oficial</span>
+                      <h2 class="panel-heading">Facturación y cierre de caja</h2>
+                    </div>
+                    <span class="pastel-chip pastel-chip--lavender">BCV: Bs. 46,82 / USD</span>
+                  </div>
+
+                  <div class="billing-grid">
+                    <div class="billing-card">
+                      <span class="billing-label">Ingresos del día</span>
+                      <strong class="billing-figure">$684,50</strong>
+                      <span class="billing-sub">Bs. 32.048,29 equiv.</span>
+                    </div>
+                    <div class="billing-card">
+                      <span class="billing-label">Pago Móvil / Bs.</span>
+                      <strong class="billing-figure">Bs. 14.982,40</strong>
+                      <span class="billing-sub">9 transacciones</span>
+                    </div>
+                    <div class="billing-card">
+                      <span class="billing-label">Divisas / Zelle</span>
+                      <strong class="billing-figure">$364,50</strong>
+                      <span class="billing-sub">7 órdenes cobradas</span>
+                    </div>
+                  </div>
+
+                  <div class="cashier-bar">
+                    <div>
+                      <strong>Cuadre diario automático</strong>
+                      <p>Presupuestos en PDF, abonos parciales y desglose por método de pago sin hojas sueltas.</p>
+                    </div>
+                    <span class="pastel-pill pastel-pill--mint">Caja cuadrada</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Panel 4: Modo Offline -->
+              <div
+                id="panel-offline"
+                role="tabpanel"
+                aria-labelledby="tab-offline"
+                class="app-panel"
+                hidden
+              >
+                <div class="panel-inner">
+                  <div class="panel-header">
+                    <div>
+                      <span class="panel-eyebrow">Write-through + Cola FIFO</span>
+                      <h2 class="panel-heading">Arquitectura offline-first real</h2>
+                    </div>
+                    <button type="button" id="simular-sync-btn" class="mini-action-btn">
+                      Simular reconexión
+                    </button>
+                  </div>
+
+                  <div class="offline-card">
+                    <div class="offline-status-row">
+                      <span id="offline-badge" class="pastel-pill pastel-pill--amber">Sin conexión · Guardando en bóveda</span>
+                      <span id="offline-counter" class="mono-tag">sync_queue: 3 pendientes</span>
+                    </div>
+
+                    <ul id="sync-queue-list" class="sync-queue-list">
+                      <li>
+                        <span class="queue-op">CREATE_ORDER #SL-1046</span>
+                        <span class="queue-state" data-state="queued">En cola local (AES-256)</span>
+                      </li>
+                      <li>
+                        <span class="queue-op">SAVE_RESULTS #SL-1042</span>
+                        <span class="queue-state" data-state="queued">En cola local (AES-256)</span>
+                      </li>
+                      <li>
+                        <span class="queue-op">REGISTER_PAYMENT #SL-1044</span>
+                        <span class="queue-state" data-state="queued">En cola local (AES-256)</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bloque 2: Sección atmosférica estilo Amie con pills inline -->
+    <section id="sincronizacion" class="atmosphere-section">
+      <div class="atmosphere-inner">
+        <div class="atmosphere-copy">
+          <h2 class="atmosphere-title">
+            Trabaja
+            <span class="inline-pill inline-pill--lock">
+              <span aria-hidden="true">🔒</span> Sin internet
+            </span>
+            en recepción. Sincroniza
+            <span class="inline-pill inline-pill--orders">
+              <span aria-hidden="true">🧪</span> Órdenes
+            </span>
+            <span class="inline-pill inline-pill--results">
+              <span aria-hidden="true">📄</span> Resultados
+            </span>
+            con tu app móvil.
+          </h2>
+          <p class="atmosphere-text">
+            Si falla el internet del laboratorio, nadie se detiene. Cada registro se cifra al instante en SQLite local y se envía en orden apenas vuelve la señal, compartiendo la misma base en la nube que SweetLab móvil.
+          </p>
+        </div>
+
+        <div class="sync-showcase" aria-hidden="true">
+          <div class="sync-card sync-card--back">
+            <span class="sync-card-tag">SweetLab Móvil</span>
+            <strong>Bioanálisis en ruta</strong>
+            <p>Consulta órdenes del día y valida resultados desde el teléfono.</p>
+          </div>
+
+          <div class="sync-card sync-card--front">
+            <div class="sync-card-head">
+              <img src="assets/sweet-lab-logo.png" alt="" width="28" height="28" />
+              <div>
+                <strong>Sincronización idempotente</strong>
+                <span>Windows Credential Manager + Rust</span>
+              </div>
+            </div>
+            <div class="sync-pill-row">
+              <span class="pastel-pill pastel-pill--mint">0 duplicados</span>
+              <span class="pastel-pill pastel-pill--lavender">Cero secretos en WebView</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bloque 3: Módulos clave en tarjetas táctiles -->
+    <section id="modulos" class="bento-section">
+      <div class="section-intro">
+        <span class="section-eyebrow">Diseñado para la rutina diaria</span>
+        <h2 class="section-title">Cada módulo del laboratorio, en su lugar.</h2>
+      </div>
+
+      <div class="bento-grid">
+        <article class="bento-card">
+          <span class="bento-badge pastel-pill pastel-pill--lavender">PDF Vectorial</span>
+          <h3>Resultados con sellos y firmas digitales</h3>
+          <p>
+            Genera reportes clínicos nítidos en memoria con <code>pdfmake</code>, valores de referencia automáticos y exportación directa para imprimir o enviar al paciente.
+          </p>
+        </article>
+
+        <article class="bento-card">
+          <span class="bento-badge pastel-pill pastel-pill--mint">Multimoneda</span>
+          <h3>Presupuestos, facturación y tasa BCV</h3>
+          <p>
+            Cotiza exámenes en segundos, registra pagos en bolívares o divisas con conversión BCV integrada y cierra la caja diaria sin descuadres.
+          </p>
+        </article>
+
+        <article class="bento-card">
+          <span class="bento-badge pastel-pill pastel-pill--sky">Seguridad Clínica</span>
+          <h3>Bóveda AES-256-GCM y cero exposición</h3>
+          <p>
+            Las llaves viven en Windows Credential Manager. El frontend nunca toca credenciales ni guarda datos clínicos en <code>localStorage</code> o cookies.
+          </p>
+        </article>
+
+        <article class="bento-card">
+          <span class="bento-badge pastel-pill pastel-pill--amber">Control de Roles</span>
+          <h3>Recepción, bioanálisis y administración</h3>
+          <p>
+            Diez pantallas especializadas con bloqueo automático por inactividad para proteger la sesión en equipos compartidos del laboratorio.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Bloque 4: Lista de espera / Acceso anticipado -->
+    <section id="lista-espera" class="waitlist-section">
+      <div class="waitlist-card">
+        <div class="emblem-3d emblem-3d--sm" aria-hidden="true">
+          <img src="assets/sweet-lab-logo.png" alt="" width="56" height="56" />
+        </div>
+
+        <h2 class="waitlist-title">Sé de los primeros laboratorios en probarlo.</h2>
+        <p class="waitlist-subtitle">
+          Déjanos tu correo y te avisaremos apenas abramos el acceso anticipado para Windows 10 y 11.
+        </p>
+
+        <form id="waitlist-form" class="waitlist-form" novalidate>
+          <div class="waitlist-field-group">
+            <label for="waitlist-email" class="visually-hidden">Correo electrónico del laboratorio</label>
+            <span id="email-hint" class="field-hint">Formato: laboratorio@ejemplo.com</span>
+
+            <div class="waitlist-input-row">
+              <input
+                type="email"
+                id="waitlist-email"
+                name="email"
+                required
+                autocomplete="email"
+                placeholder="tu@laboratorio.com"
+                aria-describedby="email-hint"
+                aria-invalid="false"
+                data-error="email-error"
+              />
+              <button type="submit" id="waitlist-submit" class="pill-cta">
+                Solicitar acceso
+              </button>
+            </div>
+
+            <div id="email-error" class="error-msg">
+              <span role="img" aria-label="Error">✕</span> Ingresa un correo válido en formato nombre@dominio.com.
+            </div>
+          </div>
+
+          <fieldset class="consent-fieldset">
+            <legend class="visually-hidden">Autorizaciones legales obligatorias</legend>
+
+            <div class="consent-item">
+              <label class="consent-check" for="accept-terms">
+                <input
+                  type="checkbox"
+                  id="accept-terms"
+                  name="accept_terms"
+                  required
+                  aria-invalid="false"
+                  data-error="terms-error"
+                />
+                <span>
+                  He leído y acepto los
+                  <a href="terminos.html" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a>.
+                </span>
+              </label>
+              <div id="terms-error" class="error-msg">
+                <span role="img" aria-label="Error">✕</span> Debes aceptar los Términos y Condiciones para continuar.
+              </div>
+            </div>
+
+            <div class="consent-item">
+              <label class="consent-check" for="accept-privacy">
+                <input
+                  type="checkbox"
+                  id="accept-privacy"
+                  name="accept_privacy"
+                  required
+                  aria-invalid="false"
+                  data-error="privacy-error"
+                />
+                <span>
+                  Autorizo de manera previa, expresa e informada el tratamiento de mi correo conforme a la
+                  <a href="privacidad.html" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>.
+                </span>
+              </label>
+              <div id="privacy-error" class="error-msg">
+                <span role="img" aria-label="Error">✕</span> Debes autorizar la Política de Privacidad para registrarte.
+              </div>
+            </div>
+          </fieldset>
+
+          <div id="waitlist-feedback" class="waitlist-feedback" hidden></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/sweet-lab-logo.png" alt="" width="20" height="20" />
+        <span>SweetLab Desktop</span>
+      </div>
+      <nav class="footer-legal-links" aria-label="Documentos legales">
+        <a href="terminos.html">Términos y Condiciones</a>
+        <a href="privacidad.html">Política de Privacidad</a>
+        <a href="cookies.html">Política de Cookies</a>
+        <a href="reembolso.html">Política de Reembolso</a>
+      </nav>
+      <p class="footer-note">Sistema de Información de Laboratorio Clínico · Windows 10 / 11</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
