@@ -140,7 +140,7 @@ function initLegalModal() {
         <h2>4. Alcance y disponibilidad</h2>
         <p>Las vistas previas mostradas en este sitio son demostrativas del funcionamiento del software. Las funcionalidades finales, planes, precios y condiciones comerciales se informarán de manera previa, clara y suficiente antes de cualquier contratación.</p>
         <h2>5. Ley aplicable y jurisdicción</h2>
-        <p>Estos Términos se rigen por las leyes de la República Bolivariana de Venezuela. Contacto: <a href="mailto:jesusramos.1992@gmail.com">jesusramos.1992@gmail.com</a>.</p>
+        <p>Estos Términos se rigen por las leyes de la República Bolivariana de Venezuela. Contacto: <a href="mailto:labadminsweet@gmail.com">labadminsweet@gmail.com</a>.</p>
       `,
     },
     privacidad: {
@@ -150,7 +150,7 @@ function initLegalModal() {
       html: `
         <p>En cumplimiento de los artículos 28 y 60 de la <strong>Constitución de la República Bolivariana de Venezuela</strong>, la <strong>Ley Especial contra los Delitos Informáticos</strong> y el <strong>Decreto con Fuerza de Ley sobre Mensajes de Datos y Firmas Electrónicas</strong>, informamos cómo recolectamos, resguardamos y tratamos los datos personales en este sitio web.</p>
         <h2>1. Responsable del tratamiento</h2>
-        <p><strong>Responsable:</strong> Jesús Ramos / Proyecto SweetLab Desktop.<br /><strong>Contacto:</strong> <a href="mailto:jesusramos.1992@gmail.com">jesusramos.1992@gmail.com</a></p>
+        <p><strong>Responsable:</strong> Jesús Ramos / Proyecto SweetLab Desktop.<br /><strong>Contacto:</strong> <a href="mailto:labadminsweet@gmail.com">labadminsweet@gmail.com</a></p>
         <h2>2. Datos recolectados (principio de minimización)</h2>
         <p>En el formulario de lista de espera solicitamos <strong>únicamente su dirección de correo electrónico</strong>. No solicitamos datos sensibles, historias clínicas ni información financiera en este sitio web.</p>
         <p>Para dejar constancia verificable de su consentimiento como mensaje de datos, conservamos un registro técnico de aceptación: identificador único del registro, fecha y hora exacta (UTC) de aceptación de cada casilla, versión de las políticas aceptadas, URL del formulario y agente de usuario del navegador.</p>
@@ -164,7 +164,7 @@ function initLegalModal() {
         <ul>
           <li><strong>Acceder</strong> a su correo registrado y a la constancia de su consentimiento.</li>
           <li><strong>Actualizar o rectificar</strong> su dirección de correo electrónico.</li>
-          <li><strong>Revocar su consentimiento</strong> y solicitar la eliminación definitiva de su correo en cualquier momento escribiendo a <a href="mailto:jesusramos.1992@gmail.com">jesusramos.1992@gmail.com</a>.</li>
+          <li><strong>Revocar su consentimiento</strong> y solicitar la eliminación definitiva de su correo en cualquier momento escribiendo a <a href="mailto:labadminsweet@gmail.com">labadminsweet@gmail.com</a>.</li>
         </ul>
       `,
     },
