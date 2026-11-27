@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="title">
+  <title id="title">Sweet Lab — Ícono de aplicación</title>
+  <defs>
+    <linearGradient id="sl-bg" x1="20" y1="20" x2="236" y2="236" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1E1B4B"/>
+      <stop offset="55%" stop-color="#311068"/>
+      <stop offset="100%" stop-color="#4C1D95"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="248" height="248" rx="54" fill="url(#sl-bg)" stroke="#7928CA" stroke-width="4"/>
+  <path fill="#FFFFFF" d="M 128 57.28 L 180.36 87.55 L 154.52 102.5 L 128 87.2 L 92.64 107.6 L 92.64 138.22 L 66.8 153.15 L 66.8 92.64 Z"/>
+  <path fill="#FFFFFF" d="M 128 198.72 L 75.64 168.45 L 101.48 153.5 L 128 168.8 L 163.36 148.4 L 163.36 117.78 L 189.2 102.85 L 189.2 163.36 Z"/>
+  <circle fill="#D946EF" cx="128" cy="128" r="18.36"/>
+</svg>
